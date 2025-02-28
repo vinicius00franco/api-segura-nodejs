@@ -1,10 +1,9 @@
-const bodyParser = require('body-parser')
- 
-const produto = require('./produtoRoute')
+const bodyParser = require("body-parser");
 
-module.exports = app => {
-  app.use(
-    bodyParser.json(),
-    produto
-  )
-}
+const produto = require("./produtosRoute");
+const usuarios = require("./usuariosRoute");
+
+module.exports = (app) => {
+  app.use('/produto', produto);
+  app.use('/usuarios', usuarios);
+};
