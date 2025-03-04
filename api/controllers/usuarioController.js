@@ -8,7 +8,7 @@ class UsuarioController {
     try {
       const usuario = await UsuarioService.cadastrar({ nome, email, senha });
 
-      res.status(201).send(usuario, { mensagem: "Usuario cadastrado com sucesso!" });
+      res.status(201).send({ usuario, mensagem: "Usuario cadastrado com sucesso!" });
     } catch (error) {
       res.status(400).send({ mensagem: error.message });
     }
@@ -19,6 +19,7 @@ class UsuarioController {
 
     res.status(200).json(usuarios);
   }
+
   static async buscarUsuarioPorId(req, res) {
     try {
       const { id } = req.params;
@@ -28,6 +29,7 @@ class UsuarioController {
       res.status(400).send({ message: error.message });
     }
   }
+
   static async editarUsuario(req, res) {
     const { id } = req.params;
     const { nome, email } = req.body;
@@ -38,6 +40,7 @@ class UsuarioController {
       res.status(400).send({ message: error.message });
     }
   }
+
   static async deletarUsuario(req, res) {
     const { id } = req.params;
     try {

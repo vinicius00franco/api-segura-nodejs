@@ -5,9 +5,8 @@
   "main": "index.js",
   "nodeVersion": "18.15.0",
   "scripts": {
-    
-    "start": "nodemon ./server.js"
-    
+    "start": "npm run check-migrations && node swagger.js && nodemon ./server.js",
+    "check-migrations": "node scripts/checkMigrations.js"
   },
   "keywords": [],
   "author": "Raphael Lucas Girao de Lima",
@@ -15,9 +14,11 @@
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "body-parser": "^1.20.1",
+    "dotenv": "^16.4.7",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "path": "^0.12.7",
-    "pg": "^8.8.0",
+    "pg": "^8.13.3",
     "sequelize": "^6.37.5",
     "sequelize-cli": "^6.5.2",
     "swagger-ui-express": "^5.0.1",

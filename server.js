@@ -24,8 +24,25 @@ routes(app);
 // Liste todas as rotas
 expressListRoutes(app);
 
+const options = {
+  swaggerOptions: {
+    authAction: {
+      BearerAuth: {
+        name: "BearerAuth",
+        schema: {
+          type: "http",
+          in: "header",
+          name: "Authorization",
+          description: "",
+        },
+        value: "Bearer <JWT>"
+      }
+    }
+  }
+};
+
 // Rota para a documentação interativa
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile, options));
 
 const PORT = 3000;
 app.listen(PORT, () => {
