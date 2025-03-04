@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+  postgres_dev:
+    image: postgres:latest
+    container_name: postgres_dev
+    restart: always
+    environment:
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: dev_db
+    ports:
+      - "5433:5432" # Porta diferente para evitar conflito
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+  postgres_prod:
+    image: postgres:latest
+    container_name: postgres_prod
+    restart: always
+    environment:
+      POSTGRES_USER: prod_user
+      POSTGRES_PASSWORD: prod_password
+      POSTGRES_DB: prod_db
+    ports:
+      - "5434:5432" # Porta diferente para evitar conflito
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+  postgres_test:
+    image: postgres:latest
+    container_name: postgres_test
+    restart: always
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test_db
+    ports:
+      - "5435:5432" # Porta diferente para evitar conflito
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data # Teste usa os mesmos dados do prod
+    networks:
+      - my_network
+    depends_on:
+      - postgres_prod
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres_dev
+      - postgres_test
+      - postgres_prod
+    networks:
+      - my_network
+
+volumes:
+  postgres_dev_data:
+  postgres_prod_data:
+
+networks:
+  my_network:
+    driver: bridge
