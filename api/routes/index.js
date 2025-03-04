@@ -6,6 +6,7 @@ const produto = require("./produtosRoute");
 const usuarios = require("./usuariosRoute");
 const auth = require("./authRoute");
 const database = require("./databaseRoute");
+const permissoes = require("./rolesRoute");
 
 module.exports = (app) => {
   app.use(bodyParser.json());
@@ -13,4 +14,5 @@ module.exports = (app) => {
   app.use("/usuarios", usuarios);
   app.use("/auth", auth);
   app.use("/database-conexao", database);
+  app.use("/permissoes", permissoes);
 };
