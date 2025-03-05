@@ -1,13 +1,16 @@
 const { Router } = require("express");
 const RolesController = require('../controllers/rolesController')
+const autenticado = require("../middleware/autenticado");
 
 const router = Router();
 
+router.use(autenticado);
+
 router
-  .post("/cadastrar", RolesController.cadastrar)
-  .get("/listar", RolesController.listar)
-  .get("/buscar/:id", RolesController.buscar)
-  .delete("/deletar/:id", RolesController.deletar)
-  .put("/editar/:id", RolesController.editar);
+  .post('', RolesController.cadastrar)
+  .get('', RolesController.listar)
+  .get('/:id', RolesController.buscar)
+  .put('/:id', RolesController.editar)
+  .delete('/:id', RolesController.deletar);
 
 module.exports = router;

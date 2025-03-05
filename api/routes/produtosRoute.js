@@ -1,13 +1,16 @@
 const { Router } = require('express')
 const ProdutoController = require('../controllers/produtoController')
+const autenticado = require("../middleware/autenticado");
 
 const router = Router()
 
+router.use(autenticado);
+
 router
-  .post('/cadastrar', ProdutoController.cadastrarProduto)
-  .get('/buscar/todos', ProdutoController.buscarTodosProdutos)
-  .get('/buscar/id/:id', ProdutoController.buscarProdutoPorId)
-  .delete('/deletar/id/:id', ProdutoController.deletarProdutoPorId)
-  .put('/editar/id/:id', ProdutoController.editarProduto)
+  .post('', ProdutoController.cadastrarProduto)
+  .get('', ProdutoController.buscarTodosProdutos)
+  .get('/:id', ProdutoController.buscarProdutoPorId)
+  .put('/:id', ProdutoController.editarProduto)
+  .delete('/:id', ProdutoController.deletarProdutoPorId)
 
 module.exports = router
