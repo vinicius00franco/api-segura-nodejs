@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Meu Swagger UI Customizado</title>
+    <!-- CSS principal do Swagger UI -->
+    <link rel="stylesheet" href="node_modules/swagger-ui-dist/swagger-ui.css" />
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+
+    <!-- JS principal do Swagger UI -->
+    <script src="node_modules/swagger-ui-dist/swagger-ui-bundle.js"></script>
+    <script src="node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js"></script>
+
+    <!-- Seu script de customização -->
+    <script>
+      window.onload = function () {
+        // Inicializa o Swagger UI
+        const ui = SwaggerUIBundle({
+          url: "https://petstore.swagger.io/v2/swagger.json", // Exemplo
+          dom_id: "#swagger-ui",
+          presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+          layout: "StandaloneLayout",
+        });
+
+        // ---------------------
+        // Exemplo com MutationObserver
+        // ---------------------
+
+        // Função que salva o valor do campo
+        function saveFieldValue(field) {
+          const key =
+            "swagger_field_" + field.name + "_" + field.dataset.swaggerId;
+          localStorage.setItem(key, field.value);
+        }
+
+        // Função que restaura o valor do campo
+        function restoreFieldValue(field) {
+          const key =
+            "swagger_field_" + field.name + "_" + field.dataset.swaggerId;
+          const savedValue = localStorage.getItem(key);
+          if (savedValue !== null) {
+            field.value = savedValue;
+          }
+        }
+
+        // Cria o MutationObserver para observar mudanças no #swagger-ui
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              // Verifica se o nó adicionado é um textarea ou contém textareas
+              if (node.nodeType === 1) {
+                // Se for um textarea diretamente
+                if (node.tagName === "TEXTAREA") {
+                  prepararTextarea(node);
+                }
+                // Ou se contiver textareas como filhos
+                const textareas = node.querySelectorAll?.("textarea") || [];
+                textareas.forEach((textarea) => {
+                  prepararTextarea(textarea);
+                });
+              }
+            });
+          });
+        });
+
+        // Função para preparar cada textarea
+        function prepararTextarea(textarea) {
+          // Usamos um data-attribute para diferenciar cada textarea
+          // Por exemplo, algo baseado no path da operação
+          // (o Swagger UI normalmente coloca algo no 'name' ou 'id')
+          if (!textarea.dataset.swaggerId) {
+            // Crie um ID único se precisar
+            textarea.dataset.swaggerId = Math.random()
+              .toString(36)
+              .substring(2);
+          }
+
+          // Restaura o valor (se houver)
+          restoreFieldValue(textarea);
+
+          // Adiciona listener para salvar o valor
+          textarea.addEventListener("input", () => {
+            saveFieldValue(textarea);
+          });
+        }
+
+        // Inicia a observação no #swagger-ui
+        const swaggerUiElement = document.getElementById("swagger-ui");
+        observer.observe(swaggerUiElement, { childList: true, subtree: true });
+      };
+    </script>
+  </body>
+</html>

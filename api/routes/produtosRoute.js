@@ -7,8 +7,8 @@ const router = Router()
 router.use(autenticado);
 
 router
-  .post('', ProdutoController.cadastrarProduto)
-  .get('', ProdutoController.buscarTodosProdutos)
+  .post('/', ProdutoController.cadastrarProduto)
+  .get('/', ProdutoController.buscarTodosProdutos)
   .get('/:id', ProdutoController.buscarProdutoPorId)
   .put('/:id', ProdutoController.editarProduto)
   .delete('/:id', ProdutoController.deletarProdutoPorId)

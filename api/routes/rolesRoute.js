@@ -7,8 +7,8 @@ const router = Router();
 router.use(autenticado);
 
 router
-  .post('', RolesController.cadastrar)
-  .get('', RolesController.listar)
+  .post('/', RolesController.cadastrar)
+  .get('/', RolesController.listar)
   .get('/:id', RolesController.buscar)
   .put('/:id', RolesController.editar)
   .delete('/:id', RolesController.deletar);
